@@ -3,7 +3,7 @@ import { FC } from 'react';
 const ResourceListItem: FC<{resource: string}> = ({ resource }) => {
     return (
        <li>
-           Resource:
+           Resource:{' '}
            <a href={"/resources/" + resource}>
                {resource}
            </a>
