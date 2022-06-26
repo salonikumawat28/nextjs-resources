@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
+import ResourceListItem from '../../components/resource-list-item';
 
 const Resources: NextPage = () => {
     const [resources, setResources] = useState({});
@@ -17,7 +18,7 @@ const Resources: NextPage = () => {
             <h1>Resources List</h1>
             <div>
                 <ul>
-                    {Object.keys(resources).map(resource => <li key={resource}>Resource: <a href={'resources/' + resource}>{resource}</a></li>)}
+                    {Object.keys(resources).map(resource => <ResourceListItem key= {resource} resource={resource}/>)}
                 </ul>
             </div>
         </div>
