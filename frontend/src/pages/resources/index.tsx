@@ -17,7 +17,7 @@ const Resources: NextPage = () => {
             <h1>Resources List</h1>
             <div>
                 <ul>
-                    {Object.keys(resources).map(resource => <li key={resource}>Resource: {resource}</li>)}
+                    {Object.keys(resources).map(resource => <li key={resource}>Resource: <a href={'resources/' + resource}>{resource}</a></li>)}
                 </ul>
             </div>
         </div>
