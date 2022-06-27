@@ -1,9 +1,7 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-
-
-
+import classNames from "classnames";
 
 const Resource : NextPage = () => {
     const [userName, setUserName] = useState("");
@@ -60,7 +58,7 @@ const Resource : NextPage = () => {
     useEffect(() => {fetchResourceDetails()}, [resourceId]);
     
     return (
-        <div>
+        <div className={classNames("pageContent", "rightContentPage")}>
             <h1>Hello! This is resource: { resourceId } page.</h1>
 
             {resourceLoading && <p>Loading resource details...</p>}
