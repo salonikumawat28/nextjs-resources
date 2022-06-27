@@ -59,15 +59,14 @@ const Resource : NextPage = () => {
     
     return (
         <div className={classNames("pageContent", "rightContentPage")}>
-            <h1>Hello! This is resource: { resourceId } page.</h1>
-
-            {resourceLoading && <p>Loading resource details...</p>}
-
-            {userLoading && <p>Loading user info...</p>}
-            {!userLoading && userName && <p>User Name: {userName}</p>}
-
-            {deviceLoading && <p>Loading device info...</p>}
-            {!deviceLoading && deviceName && <p>Device Name: {deviceName}</p>}
+            <h1>Resource { resourceId }</h1>
+            <p>
+                {resourceLoading && <>Loading resource details...<br/></>}
+                {userLoading && <>Loading user info...<br/></>}
+                {!userLoading && userName && <>User Name: {userName}<br/></>}
+                {deviceLoading && <>Loading device info...<br/></>}
+                {!deviceLoading && deviceName && <>Device Name: {deviceName}</>}
+            </p>
         </div>
         
     ); 
