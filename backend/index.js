@@ -77,7 +77,9 @@ app.get("/resources", (req, res) => {
 app.get("/resources/:resourceId", (req, res) => {
   const resourceId = req.params["resourceId"];
   if (resourceId in resources) {
-    res.send(JSON.stringify(resources[resourceId]));
+    setTimeout(() => {
+      res.send(JSON.stringify(resources[resourceId]));
+    }, 2000);
   } else {
     res.status(404).send("resource not found");
   }
@@ -86,7 +88,9 @@ app.get("/resources/:resourceId", (req, res) => {
 app.get("/users/:userId", (req, res) => {
   const userId = req.params["userId"];
   if (userId in users) {
-    res.send(JSON.stringify(users[userId]));
+    setTimeout(() => {
+      res.send(JSON.stringify(users[userId]));
+    }, 2000);
   } else {
     res.status(404).send("user not found");
   }
