@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/pages/*": [
-        "src/pages/*"
-      ]
+      "@/pages/*": ["src/pages/*"],
+      "@/styles/*": ["src/styles/*"]
     },
     "target": "es5",
     "lib": [
