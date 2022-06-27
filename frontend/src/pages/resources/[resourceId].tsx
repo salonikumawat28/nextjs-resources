@@ -12,32 +12,40 @@ const Resource : NextPage = () => {
     const router = useRouter();
     const { resourceId } = router.query;
 
-    const fetchResource = async () => { 
-        if (resourceId) {
-            // Fetch resource.
-            let fullUrl = "http://localhost:3001/resources/" + resourceId;
-            const response = await fetch(fullUrl, {method: "GET"});
-            if (response.status !== 200) return;
-            const fetchedResource = await response.json();
+    const fetchResource = async() => {
+        let fullUrl = "http://localhost:3001/resources/" + resourceId;
+        const response = await fetch(fullUrl, {method: "GET"});
+        if (response.status !== 200) return;
+        return await response.json();
+    }
 
-            // Fetch user name.
-            const responseUser = await fetch("http://localhost:3001/users/" + fetchedResource.user_id, {method: "GET"});
-            if (responseUser.status === 200) {
-                const fetchedUser = await responseUser.json();
-                setUserName(fetchedUser.name);
-            }
-            
-
-            // Fetch device name.
-            const responseDevice = await fetch("http://localhost:3001/devices/" + fetchedResource.device_id, {method: "GET"});
-            if (responseDevice.status === 200){
-                const fetchedDevice = await responseDevice.json();
-                setDeviceName(fetchedDevice.name);
-            }
+    const fetchUserName = async(user_id: string) => {
+        const responseUser = await fetch("http://localhost:3001/users/" + user_id, {method: "GET"});
+        if (responseUser.status === 200) {
+            const fetchedUser = await responseUser.json();
+            setUserName(fetchedUser.name);
         }
     }
 
-    useEffect(() => {fetchResource()}, [resourceId]);
+    const fetchDeviceName = async(device_id: string) => {
+        const responseDevice = await fetch("http://localhost:3001/devices/" + device_id, {method: "GET"});
+        if (responseDevice.status === 200){
+            const fetchedDevice = await responseDevice.json();
+            setDeviceName(fetchedDevice.name);
+        }
+    }
+
+    const fetchResourceDetails = async() => { 
+        if (resourceId) {
+            const fetchedResource = await fetchResource();
+            await Promise.all([
+                fetchUserName(fetchedResource.user_id),
+                fetchDeviceName(fetchedResource.device_id)
+            ]);
+        }
+    }
+
+    useEffect(() => {fetchResourceDetails()}, [resourceId]);
     
     return (
         <div>
