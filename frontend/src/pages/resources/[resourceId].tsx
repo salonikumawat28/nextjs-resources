@@ -2,13 +2,16 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import classNames from "classnames";
+import DeviceInfo from '../../components/device-info';
+import UserInfo from '../../components/user-info';
 
 const Resource : NextPage = () => {
-    const [userName, setUserName] = useState("");
-    const [deviceName, setDeviceName] = useState("");
+    
     const [resourceLoading, setResourceLoading] = useState(false);
-    const [userLoading, setUserLoading] = useState(false);
-    const [deviceLoading, setDeviceLoading] = useState(false);
+    const [resource, setResource] = useState<{user_id: string, device_id: string}>({
+        device_id: "",
+        user_id: ""
+    });
 
     const router = useRouter();
     const { resourceId } = router.query;
@@ -19,53 +22,19 @@ const Resource : NextPage = () => {
         const response = await fetch(fullUrl, {method: "GET"});
         setResourceLoading(false);
         if (response.status !== 200) return;
-        return await response.json();
+        const fetchedResource = await response.json();
+        setResource(fetchedResource);
     }
 
-    const fetchUserName = async(user_id: string) => {
-        if (!user_id) return;
-        setUserLoading(true);
-        const responseUser = await fetch("http://localhost:3001/users/" + user_id, {method: "GET"});
-        setUserLoading(false);
-        if (responseUser.status === 200) {
-            const fetchedUser = await responseUser.json();
-            setUserName(fetchedUser.name);
-        }
-    }
-
-    const fetchDeviceName = async(device_id: string) => {
-        if(!device_id) return;
-        setDeviceLoading(true);
-        const responseDevice = await fetch("http://localhost:3001/devices/" + device_id, {method: "GET"});
-        setDeviceLoading(false);
-        if (responseDevice.status === 200){
-            const fetchedDevice = await responseDevice.json();
-            
-            setDeviceName(fetchedDevice.name);
-        }
-    }
-
-    const fetchResourceDetails = async() => { 
-        if (resourceId) {
-            const fetchedResource = await fetchResource();
-            await Promise.all([
-                fetchUserName(fetchedResource.user_id),
-                fetchDeviceName(fetchedResource.device_id)
-            ]);
-        }
-    }
-
-    useEffect(() => {fetchResourceDetails()}, [resourceId]);
+    useEffect(() => {fetchResource()}, [resourceId]);
     
     return (
         <div className={classNames("pageContent", "rightContentPage")}>
             <h1>Resource { resourceId }</h1>
             <p>
                 {resourceLoading && <>Loading resource details...<br/></>}
-                {userLoading && <>Loading user info...<br/></>}
-                {!userLoading && userName && <>User Name: {userName}<br/></>}
-                {deviceLoading && <>Loading device info...<br/></>}
-                {!deviceLoading && deviceName && <>Device Name: {deviceName}</>}
+                {resource.user_id && <UserInfo user_id={resource.user_id} />}
+                {resource.device_id && <DeviceInfo device_id={resource.device_id} />}
             </p>
         </div>
         
